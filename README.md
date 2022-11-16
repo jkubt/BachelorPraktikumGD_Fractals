@@ -1,0 +1,1 @@
+# BachelorPraktikumGD_Fractals
