@@ -1,0 +1,2 @@
+﻿  main.cpp
+LINK : fatal error LNK1104: Datei "SDL2.lib" kann nicht geöffnet werden.
