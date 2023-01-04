@@ -8,34 +8,35 @@
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib,"opengl32.lib")
 
+#include "window.h"
+#include "defines.h"
+#include "vertexBuffer.h"
+#include "shader.h"
+
 int main(int argc, char** argv){
-	SDL_Window* window;
-	SDL_Init(SDL_INIT_EVERYTHING);
+	
+	Window window(800, 600, "FractalGenerator");
 
-	SDL_GL_SetAttribute(SDL_GL_RED_SIZE,8);
-	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	Vertex vertices[] = {
+		Vertex{-0.5f, -0.5f, 0.0f},
+		Vertex{0.0f, 0.5f, 0.0f},
+		Vertex{0.5f, -0.5f, 0.0f}
+	};
+	uint32_t numVertices = sizeof(vertices)/sizeof(Vertex);
 
-	window = SDL_CreateWindow("FractalTest", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_OPENGL);
-	SDL_GLContext glContext = SDL_GL_CreateContext(window);
+	VertexBuffer vertexBuffer(vertices, numVertices);
 
-	bool close = false;
-	while (!close) {
+	Shader shader("shader.vert", "shader.frac");
+	shader.bind();
 
-		glClearColor(0.0f,0.0f,0.0f,1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		
-		SDL_GL_SwapWindow(window);
+	while (!window.getClose()) {
+		window.clear(0.0f, 0.0f, 0.0f, 1.0f);
 
-		SDL_Event event;
-		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
-				close = true;
-			}
-		}
+		vertexBuffer.bind();
+		glDrawArrays(GL_TRIANGLES, 0, numVertices);
+		vertexBuffer.unbind();
+
+		window.update();
 	}
 
 	return 0;
