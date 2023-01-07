@@ -82,3 +82,10 @@ GLuint Shader::createShader(const char* vertexShaderFilename, const char* fragme
 
 	return program;
 }
+
+void Shader::setColorUniform(float r, float g, float b, float a) {
+	colorUniformLocation = glGetUniformLocation(shaderId, "u_color");
+	if (colorUniformLocation != -1) {
+		glUniform4f(colorUniformLocation, r, g, b, a);
+	}
+}

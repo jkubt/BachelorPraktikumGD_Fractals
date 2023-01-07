@@ -145,12 +145,14 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shader.cpp" />
+    <ClCompile Include="sierpinskiTriangle.cpp" />
     <ClCompile Include="vertexBuffer.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="defines.h" />
     <ClInclude Include="shader.h" />
+    <ClInclude Include="sierpinskiTriangle.h" />
     <ClInclude Include="vertexBuffer.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
