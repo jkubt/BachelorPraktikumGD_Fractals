@@ -1,2 +1,17 @@
-﻿  sierpinskiTriangle.cpp
-  FractalTest.vcxproj -> D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\x64\Debug\FractalTest.exe
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: Das Zwischenverzeichnis (x64\Debug\) enthält freigegebene Dateien aus einem anderen Projekt (FractalTest.vcxproj). Dies kann zu einem falschen Bereinigungs- und Neuerstellungsverhalten führen.
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_opengl3.cpp
+  imgui_impl_sdl.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  main.cpp
+  shader.cpp
+  sierpinskiTriangle.cpp
+  vertexBuffer.cpp
+  window.cpp
+  Code wird generiert...
+glew32s.lib(glew.obj) : warning LNK4099: PDB "" wurde nicht mit "glew32s.lib(glew.obj)" oder an "" gefunden; Objekt wird verknüpft, als ob keine Debuginformationen vorhanden wären.
+MSVCRTD.lib(initializers.obj) : warning LNK4098: Standardbibliothek "libcmt.lib" steht in Konflikt mit anderen Bibliotheken; /NODEFAULTLIB:Bibliothek verwenden.
+  FractalTest.vcxproj -> D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\x64\Debug\FractalGenerator Prototype.exe

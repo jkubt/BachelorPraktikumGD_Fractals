@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <chrono>
 #include <thread>
 #include <cmath>
@@ -18,8 +19,16 @@ SierpinskiTriangle::SierpinskiTriangle(int depth, float r, float g, float b, flo
 	lineVer[1] = Vertex{10.0f, 800.0f, 0.0f};
 	lineHor[0] = Vertex{10.0f, 100.0f, 0.0f};
 	lineHor[1] = Vertex{810.f, 100.0f, 0.0f};
+	box[0] = Vertex{ 10.0f, 100.0f, 0.0f };
+	box[1] = Vertex{ 810.0f, 100.0f, 0.0f };
+	box[2] = Vertex{ 10.0f, 800.0f, 0.0f };
+	box[3] = Vertex{ 810.0f, 800.0f, 0.0f };
 	this->depth = depth;
 	size = 1.0f / ((float) pow(2, depth));
+	redValue255 = int(r * 255);
+	greenValue255 = int(g * 255);
+	blueValue255 = int(b * 255);
+	alphaValue255 = int(a * 255);
 	zoomLevel = 1.0f;
 	zoomLevel_lastDetail = 1.0f;
 	zoomLevel_out = (float) pow(1.08006, 9 * 2);
@@ -28,24 +37,15 @@ SierpinskiTriangle::SierpinskiTriangle(int depth, float r, float g, float b, flo
 	mouseX = 0;
 	mouseY = 0;
 	wheelY = 0;
+	boxesTotal = 0;
 	boxesWithContent = 0;
-	boxesWithoutContent = 0;
 	shader.bind();
 	shader.setColorUniform(r, g, b, a);
 	model = glm::mat4(1.0f);
 	projection = glm::ortho(0.0f, 1600.0f, 0.0f, 900.0f, -10.0f, 100.0f);
 }
 
-void SierpinskiTriangle::drawIterations(Window window) {
-	for (int i = 0; i <= depth; i++) {
-		window.clear(0.4f, 0.4f, 0.4f, 1.0f);
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-		size = 1.0f / ((float)pow(2, i));
-		drawRec(i, glm::vec3(0.0f, 0.0f, 0.0f));
-	}
-}
-
-void SierpinskiTriangle::draw(int windowWidth, int windowHeight, bool zoom) {
+void SierpinskiTriangle::draw(int windowWidth, int windowHeight, bool zoom, float r, float g, float b) {
 	if (zoomLevel > zoomLevel_lastDetail*2.0f) {
 		if (zoomLevel > 4.0f) {
 			depth--;
@@ -74,7 +74,14 @@ void SierpinskiTriangle::draw(int windowWidth, int windowHeight, bool zoom) {
 		zoomLevel_lastDetail = 1.0f;
 		last = false;
 	}
+	if (zoomLevel < 1.0f) {
+		zoomLevel = 1.0f;
+	}
+	setColorFractal(r, g, b);
+	shader.bind();
+	shader.setColorUniform(r, g, b, 1.0f);
 	drawRec(depth, glm::vec3(0.0f, 0.0f, 0.0f));
+	shader.unbind();
 }
 
 void SierpinskiTriangle::drawRec(int depth, glm::vec3 transform) {
@@ -82,7 +89,6 @@ void SierpinskiTriangle::drawRec(int depth, glm::vec3 transform) {
 		float deltaX = triangle[0].x - (triangle[0].x * size*zoomLevel);
 		float deltaY = triangle[0].y - (triangle[0].y * size*zoomLevel);
 		transform += glm::vec3(deltaX, deltaY, 0.0f);
-		shader.bind();
 		glm::mat4 model_draw = glm::translate(model, transform);
 		model_draw = glm::scale(model_draw, glm::vec3(size*zoomLevel));;
 		glm::mat4 modelProj = projection * model_draw;
@@ -112,9 +118,6 @@ void SierpinskiTriangle::drawRec(int depth, glm::vec3 transform) {
 
 void SierpinskiTriangle::handleZoom(float speedMultiplier, int mouseX, int mouseY, Sint32 wheelY, bool leftButton, bool rightButton) {
 	float mult = 0.04003f * speedMultiplier;
-	if (countReplaced == 0 && zoomLevel < 2.0f) {
-		mult /= 2;
-	}
 	this->mouseX = mouseX;
 	this->mouseY = mouseY;
 	this->wheelY = wheelY;
@@ -127,6 +130,9 @@ void SierpinskiTriangle::handleZoom(float speedMultiplier, int mouseX, int mouse
 		}
 	}
 	if (zoomLevel > 1.0f || leftButton) {
+		if (countReplaced == 0 && zoomLevel < 2.0f) {
+			mult /= 2;
+		}
 		if (leftButton) {
 			zoomLevel *= (1+mult);
 		}
@@ -166,54 +172,103 @@ void SierpinskiTriangle::drawHorLines(int boxSizeFactor, float r, float g, float
 	shader.setColorUniform(1.0f, 0.0f, 0.0f, 1.0f);
 }
 
-void SierpinskiTriangle::contentBoxes(int boxSizeFactor, SDL_Surface* screen, int windowWidth, int windowHeight) {
+void SierpinskiTriangle::contentBoxes(int boxSizeFactor, int windowWidth, int windowHeight, float alphaValue) {
 	if (boxSizeFactor < 1) {
 		std::cout << "Error: boxes with content can not be calculated with boxSizeFactor < 1" << std::endl;
 		return;
 	}
-	float width = 800.0f / boxSizeFactor;
-	float height = 700.0f / boxSizeFactor;
-	Uint32 pixel;
-	Uint8 r, g, b, a;
+	boxesWithContent = 0;
+	boxesTotal = boxSizeFactor * boxSizeFactor;
+	float width = (box[1].x - box[0].x) / boxSizeFactor;
+	float height = (box[3].y - box[0].y) / boxSizeFactor;
+	unsigned char* pixels = new unsigned char[windowWidth * windowHeight * 4];
+	Uint8 red, green, blue, alpha;
 
-	glm::vec4 clipSpaceVertex = projection * glm::vec4(10.0f, 100.0f, 0.0f, 1.0f);
-	glm::vec2 ndc = glm::vec2(clipSpaceVertex.x / clipSpaceVertex.w, clipSpaceVertex.y / clipSpaceVertex.w);
-	glm::vec2 windowSpaceCoordinates = ndc * 0.5f + 0.5f;
-	int x = int(windowSpaceCoordinates.x * windowWidth);
-	int y = int(windowSpaceCoordinates.y * windowHeight);
+	glReadPixels(0, 0, windowWidth, windowHeight, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
-	pixel = get_pixel(screen, x, y);
-	SDL_GetRGBA(pixel, screen->format, &r, &g, &b, &a);
+	float complementRed = float(std::max({ redValue255, greenValue255, blueValue255 }) + std::min({ redValue255, greenValue255, blueValue255 }) - redValue255);
+	float complementGreen = float(std::max({ redValue255, greenValue255, blueValue255 }) + std::min({ redValue255, greenValue255, blueValue255 }) - greenValue255);
+	float complementBlue = float(std::max({ redValue255, greenValue255, blueValue255 }) + std::min({ redValue255, greenValue255, blueValue255 }) - blueValue255);
 
-	std::cout << unsigned(r) << " - " << unsigned(g) << " - " << unsigned(b) << " - " << unsigned(a) << " - " << std::endl;
+	shader.bind();
+	shader.setColorUniform(complementRed, complementGreen, complementBlue, alphaValue);
+
+	for (int i = 0; i < boxSizeFactor; i++) {
+		for (int j = 0; j < boxSizeFactor; j++) {
+
+			glm::vec4 clipSpaceVertex = projection * glm::vec4(10.0f + width*i, 100.0f + height*j, 0.0f, 1.0f);
+			glm::vec2 ndc = glm::vec2(clipSpaceVertex.x, clipSpaceVertex.y);
+			glm::vec2 windowSpaceCoordinates = ndc * 0.5f + 0.5f;
+			int startX = int(windowSpaceCoordinates.x * windowWidth);
+			int startY = int(windowSpaceCoordinates.y * windowHeight);
+
+			clipSpaceVertex = projection * glm::vec4(10.0f + width*(i+1), 100.0f + height*(j+1), 0.0f, 1.0f);
+			ndc = glm::vec2(clipSpaceVertex.x, clipSpaceVertex.y);
+			windowSpaceCoordinates = ndc * 0.5f + 0.5f;
+			int endX = int(windowSpaceCoordinates.x * windowWidth);
+			int endY = int(windowSpaceCoordinates.y * windowHeight);
+
+			bool exit = false;
+			for (int x = startX; x < endX; x++) {
+				for (int y = startY; y < endY; y++) {
+					red = pixels[(y * windowWidth + x) * 4];
+					green = pixels[(y * windowWidth + x) * 4 + 1];
+					blue = pixels[(y * windowWidth + x) * 4 + 2];
+					alpha = pixels[(y * windowWidth + x) * 4 + 3];
+					if (red == redValue255 && green == greenValue255 && blue == blueValue255 && alpha == alphaValue255) {
+						boxesWithContent++;
+						drawBox(float(i)*width, float(j)*height, boxSizeFactor);
+						exit = true;
+						break;
+					}
+				}
+				if (exit) {
+					break;
+				}
+			}
+		}
+	}
+	
+	shader.setColorUniform(float(redValue255) / 255.0f, float(greenValue255) / 255.0f, float(blueValue255) / 255.0f, float(alphaValue255) / 255.0f);
+
+	int boxesWithoutContent = boxesTotal - boxesWithContent;
+	std::cout << boxesWithContent << " - " << boxesWithoutContent << std::endl;
 }
 
-Uint32 SierpinskiTriangle::get_pixel(SDL_Surface* screen, int x, int y) {
-	int bpp = screen->format->BytesPerPixel;
+void SierpinskiTriangle::drawBox(float xShift, float yShift, int boxSizeFactor) {
+	
+	float size = 1.0f / float(boxSizeFactor);
+	float deltaX = box[0].x - (box[0].x * size);
+	float deltaY = box[0].y - (box[0].y * size);
+	glm::vec3 transform = glm::vec3(xShift, yShift, 0.0f);
+	transform += glm::vec3(deltaX, deltaY, 0.0f);
+	shader.bind();
+	glm::mat4 model_draw = glm::translate(model, transform);
+	model_draw = glm::scale(model_draw, glm::vec3(size));
+	glm::mat4 modelProj = projection * model_draw;
+	int modelProjMatrixLocation = glGetUniformLocation(shader.getShaderId(), "u_modelProj");
+	glUniformMatrix4fv(modelProjMatrixLocation, 1, GL_FALSE, &modelProj[0][0]);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
 
-	Uint8* pixelAdress = (Uint8*)screen->pixels + y * screen->pitch + x * bpp;
+void SierpinskiTriangle::setDepth(int depth) { 
+	this->depth = depth; 
+	size = 1.0f / ((float)pow(2, depth));
+}
 
-	switch (bpp) {
-	case 1:
-		return *pixelAdress;
-		break;
-
-	case 2:
-		return *(Uint16*)pixelAdress;
-		break;
-
-	case 3:
-		if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-			return pixelAdress[0] << 16 | pixelAdress[1] << 8 | pixelAdress[2];
-		else
-			return pixelAdress[0] | pixelAdress[1] << 8 | pixelAdress[2] << 16;
-		break;
-
-	case 4:
-		return *(Uint32*)pixelAdress;
-		break;
-
-	default:
-		return 0;
+void SierpinskiTriangle::reset(bool resetZoom, int depth) {
+	if (resetZoom) {
+		this->depth = depth;
+		size = 1.0f / ((float)pow(2, depth));
+		zoomLevel = 1.0f;
+		zoomLevel_lastDetail = 1.0f;
+		countReplaced = 0;
+		last = false;
 	}
+}
+
+void SierpinskiTriangle::setColorFractal(float r, float g, float b) {
+	redValue255 = int(r * 255.0f);
+	greenValue255 = int(g * 255.0f);
+	blueValue255 = int(b * 255.0f);
 }

@@ -8,7 +8,6 @@
 Window::Window(int width, int height, const char *title) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	// sizes for pixels and enable Double Buffering
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
@@ -21,14 +20,27 @@ Window::Window(int width, int height, const char *title) {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 #endif 
 
-	window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_MAXIMIZED | SDL_WINDOW_OPENGL| SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	glContext = SDL_GL_CreateContext(window);
+	//SDL_MaximizeWindow(window);
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+	ImGui::StyleColorsDark();
+
+	ImGui_ImplSDL2_InitForOpenGL(window, glContext);
+	ImGui_ImplOpenGL3_Init();
 
 	GLenum err = glewInit();
 	if (err != GLEW_OK) {
 		std::cout << "Error: " << glewGetErrorString(err) << std::endl;
 		std::cin.get();
 	}
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	this->width = width;
 	this->height = height;
@@ -53,13 +65,14 @@ void Window::clear(float r, float g, float b, float a) {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void Window::update() {
+void Window::updateBegin() {
 	zoom = false;
 	wheelY = 0;
-	SDL_GL_SwapWindow(window);
 
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
+		ImGui_ImplSDL2_ProcessEvent(&event);
+
 		if (event.type == SDL_QUIT) {
 			close = true;
 		}
@@ -88,30 +101,15 @@ void Window::update() {
 				rightMouseButtonPressed = false;
 			}
 		}
-		else if (event.type == SDL_WINDOWEVENT) {
-			if (event.window.event == SDL_WINDOWEVENT_RESIZED) {	//update the Viewport, when Window is resized
-				width = event.window.data1;
-				height = event.window.data2;
-				float windowAspectRatio = (float)width / (float)height;
-
-				// Window is wider than the content, so add black bars on the top and bottom
-				if (windowAspectRatio > aspectRatio) {
-					int viewportHeight = (int) ((float) width / aspectRatio);
-					int viewportY = (height - viewportHeight) / 2;
-					glViewport(0, viewportY, width, viewportHeight);
-				}
-
-				// Window is taller than (or equal to) the content, so add black bars on the left and right (with width 0 if equal)
-				else {
-					int viewportWidth = (int)((float)height * aspectRatio);
-					int viewportX = (width - viewportWidth) / 2;
-					glViewport(viewportX, 0, viewportWidth, height);
-				}
-			}
-		}
 	}
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame(window);
+	ImGui::NewFrame();
 }
 
-SDL_Surface* Window::getScreen() {
-	return SDL_GetWindowSurface(window);
+void Window::updateEnd() {
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	SDL_GL_SwapWindow(window);
 }

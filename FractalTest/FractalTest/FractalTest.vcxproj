@@ -24,6 +24,7 @@
     <ProjectGuid>{d40d8fe8-03af-416c-832c-4f9bd15ab20d}</ProjectGuid>
     <RootNamespace>FractalTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>FractalGenerator Prototype</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -71,20 +72,26 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\include;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\include;D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\include;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32;D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\lib\x86;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)lib\glew-2.1.0-win32\glew-2.1.0\include;$(SolutionDir)lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\include;$(SolutionDir)lib\SDL2_image-2.6.2\include;$(SolutionDir)lib\SDL2_ttf-2.20.1\include;$(SolutionDir)lib\boost_1_81_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32;$(SolutionDir)lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\lib\x86;$(SolutionDir)lib\SDL2_ttf-2.20.1\lib\x86;$(SolutionDir)lib\SDL2_image-2.6.2\lib\x86;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>
+    </ExecutablePath>
+    <ReferencePath>$(VC_ReferencesPath_x86); </ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\include;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\include;D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\include;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32;D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\lib\x86;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)lib\glew-2.1.0-win32\glew-2.1.0\include;$(SolutionDir)lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\include;$(SolutionDir)lib\SDL2_image-2.6.2\include;$(SolutionDir)lib\SDL2_ttf-2.20.1\include;$(SolutionDir)lib\boost_1_81_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32;$(SolutionDir)lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\lib\x86;$(SolutionDir)lib\SDL2_ttf-2.20.1\lib\x86;$(SolutionDir)lib\SDL2_image-2.6.2\lib\x86;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>
+    </ExecutablePath>
+    <ReferencePath>$(VC_ReferencesPath_x86); </ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\include;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\include;D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\include;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\lib\x64;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)lib\glew-2.1.0-win32\glew-2.1.0\include;$(SolutionDir)lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\include;$(SolutionDir)lib\SDL2_image-2.6.2\include;$(SolutionDir)lib\SDL2_ttf-2.20.1\include;$(SolutionDir)lib\boost_1_81_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;$(SolutionDir)lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\lib\x64;$(SolutionDir)lib\SDL2_ttf-2.20.1\lib\x64;$(SolutionDir)lib\SDL2_image-2.6.2\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\include;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\include;D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\include;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\lib\x64;C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)lib\glew-2.1.0-win32\glew-2.1.0\include;$(SolutionDir)lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\include;$(SolutionDir)lib\SDL2_image-2.6.2\include;$(SolutionDir)lib\SDL2_ttf-2.20.1\include;$(SolutionDir)lib\boost_1_81_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)lib\glew-2.1.0-win32\glew-2.1.0\lib\Release\x64;$(SolutionDir)lib\SDL2-devel-2.24.2-VC\SDL2-2.24.2\lib\x64;$(SolutionDir)lib\SDL2_ttf-2.20.1\lib\x64;$(SolutionDir)lib\SDL2_image-2.6.2\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,6 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SloutionDir)lib\PinGUI_mod_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,6 +114,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SloutionDir)lib\PinGUI_mod_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,6 +129,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SloutionDir)lib\PinGUI_mod_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,6 +144,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SloutionDir)lib\PinGUI_mod_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,6 +154,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="imgui_demo.cpp" />
+    <ClCompile Include="imgui_draw.cpp" />
+    <ClCompile Include="imgui_impl_opengl3.cpp" />
+    <ClCompile Include="imgui_impl_sdl.cpp" />
+    <ClCompile Include="imgui_tables.cpp" />
+    <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="sierpinskiTriangle.cpp" />
@@ -151,6 +169,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="defines.h" />
+    <ClInclude Include="imconfig.h" />
+    <ClInclude Include="imgui.h" />
+    <ClInclude Include="imgui_impl_opengl3.h" />
+    <ClInclude Include="imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="imgui_impl_sdl.h" />
+    <ClInclude Include="imgui_internal.h" />
+    <ClInclude Include="imstb_rectpack.h" />
+    <ClInclude Include="imstb_textedit.h" />
+    <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="sierpinskiTriangle.h" />
     <ClInclude Include="vertexBuffer.h" />

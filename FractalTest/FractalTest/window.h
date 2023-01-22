@@ -3,15 +3,19 @@
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_impl_opengl3.h"
+
 class Window {
 public:
 	Window(int width, int height, const char *title);
 	virtual ~Window();
 
 	void clear(float r, float g, float b, float a);
-	void update();
+	void updateBegin();
+	void updateEnd();
 
-	SDL_Surface* getScreen();
 	bool getClose() { return close; };
 	SDL_Window* getWindow() { return window; };
 	int getWidth() { return width; };
