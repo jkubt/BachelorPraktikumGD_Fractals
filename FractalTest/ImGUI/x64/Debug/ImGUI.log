@@ -1,0 +1,38 @@
+﻿  binary_to_compressed_c.cpp
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_freetype.cpp
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\ImGUI\imgui_freetype.cpp(39,10): fatal  error C1083: Datei (Include) kann nicht geöffnet werden: "ft2build.h": No such file or directory
+  imgui_impl_allegro5.cpp
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\ImGUI\imgui_impl_allegro5.cpp(56,10): fatal  error C1083: Datei (Include) kann nicht geöffnet werden: "allegro5/allegro.h": No such file or directory
+  imgui_impl_android.cpp
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\ImGUI\imgui_impl_android.h(26,59): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\ImGUI\imgui_impl_android.h(26,25): error C2146: Syntaxfehler: Fehlendes ";" vor Bezeichner "ImGui_ImplAndroid_HandleInputEvent"
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\ImGUI\imgui_impl_android.cpp(31,10): fatal  error C1083: Datei (Include) kann nicht geöffnet werden: "android/native_window.h": No such file or directory
+  imgui_impl_dx10.cpp
+  imgui_impl_dx11.cpp
+  imgui_impl_dx12.cpp
+  imgui_impl_dx9.cpp
+  imgui_impl_glfw.cpp
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\ImGUI\imgui_impl_glfw.cpp(71,10): fatal  error C1083: Datei (Include) kann nicht geöffnet werden: "GLFW/glfw3.h": No such file or directory
+  imgui_impl_glut.cpp
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\ImGUI\imgui_impl_glut.cpp(38,10): fatal  error C1083: Datei (Include) kann nicht geöffnet werden: "GL/freeglut.h": No such file or directory
+  imgui_impl_opengl2.cpp
+  imgui_impl_opengl3.cpp
+  imgui_impl_sdl.cpp
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\ImGUI\imgui_impl_sdl.cpp(70,10): fatal  error C1083: Datei (Include) kann nicht geöffnet werden: "SDL.h": No such file or directory
+  imgui_impl_sdlrenderer.cpp
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\ImGUI\imgui_impl_sdlrenderer.cpp(36,10): fatal  error C1083: Datei (Include) kann nicht geöffnet werden: "SDL.h": No such file or directory
+  imgui_impl_vulkan.cpp
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\ImGUI\imgui_impl_vulkan.h(45,10): fatal  error C1083: Datei (Include) kann nicht geöffnet werden: "vulkan/vulkan.h": No such file or directory
+  imgui_impl_wgpu.cpp
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\ImGUI\imgui_impl_wgpu.h(16,10): fatal  error C1083: Datei (Include) kann nicht geöffnet werden: "webgpu/webgpu.h": No such file or directory
+  imgui_impl_win32.cpp
+  Code wird generiert...
+  Kompilieren...
+  imgui_stdlib.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  main.cpp
+  Code wird generiert...

@@ -2,7 +2,6 @@
 # Diese .gitignore-Datei wurde von Microsoft(R) Visual Studio automatisch erstellt.
 ################################################################################
 
-/FractalTest
 /FractalTest/.vs/FractalTest/v17/ipch/AutoPCH/28a2d4aa8fce09ad/SIERPINSKITRIANGLE.ipch
 /FractalTest/.vs/FractalTest/v17/ipch/AutoPCH/500ebbfa5ce5119e/VERTEXBUFFER.ipch
 /FractalTest/.vs/FractalTest/v17/ipch/AutoPCH/95cffdc5796b57ab/MAIN.ipch
