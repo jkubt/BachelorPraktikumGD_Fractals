@@ -23,6 +23,9 @@ SierpinskiTriangle::SierpinskiTriangle(int depth, float r, float g, float b, flo
 	box[1] = Vertex{ 810.0f, 100.0f, 0.0f };
 	box[2] = Vertex{ 10.0f, 800.0f, 0.0f };
 	box[3] = Vertex{ 810.0f, 800.0f, 0.0f };
+	CoSy_x_y[0] = Vertex{ 1450.0f, 100.0f, 0.0f };
+	CoSy_x_y[1] = Vertex{ 900.0f, 100.0f, 0.0f };
+	CoSy_x_y[2] = Vertex{ 900.0f, 650.0f, 0.0f };
 	this->depth = depth;
 	size = 1.0f / ((float) pow(2, depth));
 	redValue255 = int(r * 255);
@@ -172,10 +175,9 @@ void SierpinskiTriangle::drawHorLines(int boxSizeFactor, float r, float g, float
 	shader.setColorUniform(1.0f, 0.0f, 0.0f, 1.0f);
 }
 
-void SierpinskiTriangle::contentBoxes(int boxSizeFactor, int windowWidth, int windowHeight, float alphaValue) {
+int SierpinskiTriangle::contentBoxes(int boxSizeFactor, int windowWidth, int windowHeight, float alphaValue) {
 	if (boxSizeFactor < 1) {
-		std::cout << "Error: boxes with content can not be calculated with boxSizeFactor < 1" << std::endl;
-		return;
+		return 0;
 	}
 	boxesWithContent = 0;
 	boxesTotal = boxSizeFactor * boxSizeFactor;
@@ -231,8 +233,7 @@ void SierpinskiTriangle::contentBoxes(int boxSizeFactor, int windowWidth, int wi
 	
 	shader.setColorUniform(float(redValue255) / 255.0f, float(greenValue255) / 255.0f, float(blueValue255) / 255.0f, float(alphaValue255) / 255.0f);
 
-	int boxesWithoutContent = boxesTotal - boxesWithContent;
-	std::cout << boxesWithContent << " - " << boxesWithoutContent << std::endl;
+	return boxesWithContent;
 }
 
 void SierpinskiTriangle::drawBox(float xShift, float yShift, int boxSizeFactor) {
@@ -249,6 +250,16 @@ void SierpinskiTriangle::drawBox(float xShift, float yShift, int boxSizeFactor) 
 	int modelProjMatrixLocation = glGetUniformLocation(shader.getShaderId(), "u_modelProj");
 	glUniformMatrix4fv(modelProjMatrixLocation, 1, GL_FALSE, &modelProj[0][0]);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+
+void SierpinskiTriangle::drawCoordinateSystem() {
+	shader.bind();
+	shader.setColorUniform(1.0f, 1.0f, 1.0f, 1.0f);
+	glm::mat4 modelProj = projection;
+	int modelProjMatrixLocation = glGetUniformLocation(shader.getShaderId(), "u_modelProj");
+	glUniformMatrix4fv(modelProjMatrixLocation, 1, GL_FALSE, &modelProj[0][0]);
+	glDrawArrays(GL_LINE_STRIP, 0, 3);
+	shader.setColorUniform(1.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void SierpinskiTriangle::setDepth(int depth) { 

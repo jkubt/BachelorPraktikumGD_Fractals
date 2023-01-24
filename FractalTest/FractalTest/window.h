@@ -15,6 +15,7 @@ public:
 	void clear(float r, float g, float b, float a);
 	void updateBegin();
 	void updateEnd();
+	void destroy();
 
 	bool getClose() { return close; };
 	SDL_Window* getWindow() { return window; };

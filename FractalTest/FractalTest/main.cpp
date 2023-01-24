@@ -89,6 +89,9 @@ int main(int argc, char** argv) {
 	Vertex* box = s_triangle.getBox();
 	VertexBuffer boxBuffer(box, 4);
 
+	Vertex* coSy = s_triangle.getCoordinateSystem();
+	VertexBuffer coSyBuffer(coSy, 3);
+
 	int depth = 8;
 	bool resetFractalZoom = false;
 	float zoomSpeed = 2.0f;
@@ -98,6 +101,7 @@ int main(int argc, char** argv) {
 	float colorFractal[3] = { 1.0f, 0.0f, 0.0f};
 	float boxFillerOpacity = 0.5f;
 	float percentageBoxFillerOpacity = 50.0f;
+	int amountFilledBoxes = 0;
 
 	while (!window.getClose()) {
 		
@@ -126,7 +130,7 @@ int main(int argc, char** argv) {
 
 		if (fillDimensionBoxes) {
 			boxBuffer.bind();
-			s_triangle.contentBoxes(boxSizeFactor, window.getWidth(), window.getHeight(), boxFillerOpacity);
+			amountFilledBoxes = s_triangle.contentBoxes(boxSizeFactor, window.getWidth(), window.getHeight(), boxFillerOpacity);
 			boxBuffer.unbind();
 		}
 
@@ -146,16 +150,22 @@ int main(int argc, char** argv) {
 		glDrawArrays(GL_LINE_LOOP, 0, numVerticesBorder);
 		borderBuffer.unbind();
 
-		ImGui::Begin("Box size window", NULL, ImGuiWindowFlags_NoTitleBar /*| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove*/);
+		coSyBuffer.bind();
+		s_triangle.drawCoordinateSystem();
+		coSyBuffer.unbind();
+
+		ImGui::Begin("Box size window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGui::InputInt("Box size factor", &boxSizeFactor, 1, 10);
 		if (boxSizeFactor < 0) {
 			boxSizeFactor = 0;
 		}
+		else if (boxSizeFactor > 512) {
+			boxSizeFactor = 512;
+		}
 		ImGui::End();
 
-		ImGui::Begin("Box appearance window", NULL, ImGuiWindowFlags_NoTitleBar /*| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove*/);
+		ImGui::Begin("Box appearance window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGui::Checkbox("Show Boxes", &showDimensionBoxes);
-		//ImGui::SameLine();
 		if (showDimensionBoxes) {
 			ImGui::Checkbox("Fill Boxes", &fillDimensionBoxes);
 			resetFractalZoom = true;
@@ -167,7 +177,10 @@ int main(int argc, char** argv) {
 				else if (percentageBoxFillerOpacity < 0.0f) {
 					percentageBoxFillerOpacity = 0.0f;
 				}
-				boxFillerOpacity = percentageBoxFillerOpacity / 100.0f;
+				if (boxSizeFactor > 0) {
+					float fracDimension = log(amountFilledBoxes) / log(boxSizeFactor);
+					ImGui::Text("Current Box Counting Dimension: \n log(%i)/log(%i) = %f", amountFilledBoxes, boxSizeFactor, fracDimension);
+				}
 			}
 		}
 		else {
@@ -176,34 +189,45 @@ int main(int argc, char** argv) {
 		}
 		ImGui::End();
 
-		ImGui::Begin("Depth window", NULL, ImGuiWindowFlags_NoTitleBar /*| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove*/);
+		ImGui::Begin("Depth window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		if (ImGui::SliderInt("Depth", &depth, 0, 10)) {
 			s_triangle.setDepth(depth);
 			resetFractalZoom = true;
 		}
 		ImGui::End();
 
-		ImGui::Begin("Reset zoom window", NULL, ImGuiWindowFlags_NoTitleBar /*| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove*/);
+		ImGui::Begin("Reset zoom window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		if (ImGui::Button("Reset Zoom", ImVec2(200,40))) {
 			resetFractalZoom = true;
 		}
 		ImGui::End();
 
-		ImGui::Begin("Zoom speed window", NULL, ImGuiWindowFlags_NoTitleBar /*| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove*/);
+		ImGui::Begin("Zoom speed window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGui::InputFloat("Zoom Speed", &zoomSpeed, 0.2f, 2.0f);
 		if (zoomSpeed < 0.0f) {
 			zoomSpeed = 0.0f;
 		}
 		ImGui::End();
 
-		ImGui::Begin("Select fractal color window", NULL, ImGuiWindowFlags_NoTitleBar /*| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove*/);
+		ImGui::Begin("Select fractal color window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGui::ColorEdit3("Fractal Color", colorFractal);
 		ImGui::End();
 
+		ImGui::Begin("X-axis window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground| ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+		ImGui::Text("log(s)");
+		ImGui::Text("s: sizefactor of the boxes");
+		ImGui::End();
+
+		ImGui::Begin("Y-axis window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+		ImGui::Text("N: number of filled boxes");
+		ImGui::Text("log(N)");
+		ImGui::End();
+
+
 		window.updateEnd();
 	}
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
+	
+	window.destroy();
 
 	return 0;
 }

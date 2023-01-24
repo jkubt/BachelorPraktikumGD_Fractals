@@ -14,7 +14,8 @@ public:
 	void draw(int windowWidth, int windowHeight, bool zoom, float r, float g, float b);
 	void drawVerLines(int boxSizeFactor, float r, float g, float b, float a);
 	void drawHorLines(int boxSizeFactor, float r, float g, float b, float a);
-	void contentBoxes(int boxSizeFactor, int windowWidth, int windowHeight, float alphaValue);
+	void drawCoordinateSystem();
+	int contentBoxes(int boxSizeFactor, int windowWidth, int windowHeight, float alphaValue);
 	void handleZoom(float speedMultiplier, int mouseX, int mouseY, Sint32 wheelY, bool leftButton, bool rightButton);
 	void reset(bool resetZoom, int depth);
 
@@ -22,6 +23,7 @@ public:
 	Vertex* getLineVer() { return lineVer; };
 	Vertex* getLineHor() { return lineHor; };
 	Vertex* getBox() { return box; };
+	Vertex* getCoordinateSystem() { return CoSy_x_y; };
 	float getSize() { return size; };
 
 	void setDepth(int depth);
@@ -51,6 +53,7 @@ private:
 	Vertex lineVer[2];
 	Vertex lineHor[2];
 	Vertex box[4];
+	Vertex CoSy_x_y[3];
 	Shader shader = Shader("shader.vert", "shader.frac");
 	glm::mat4 model;
 	glm::mat4 projection;
