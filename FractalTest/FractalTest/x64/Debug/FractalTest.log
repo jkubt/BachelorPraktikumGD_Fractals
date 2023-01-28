@@ -1,4 +1,6 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: Das Zwischenverzeichnis (x64\Debug\) enthält freigegebene Dateien aus einem anderen Projekt (FractalTest.vcxproj). Dies kann zu einem falschen Bereinigungs- und Neuerstellungsverhalten führen.
   main.cpp
-D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\main.cpp(181,26): warning C4244: "Initialisierung": Konvertierung von "double" in "float", möglicher Datenverlust
-  FractalTest.vcxproj -> D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\x64\Debug\FractalGenerator Prototype.exe
+C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\main.cpp(184,26): warning C4244: "Initialisierung": Konvertierung von "double" in "float", möglicher Datenverlust
+  sierpinskiTriangle.cpp
+  Code wird generiert...
+  FractalTest.vcxproj -> C:\Uni\Informatikstudium\3.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\x64\Debug\FractalGenerator Prototype.exe

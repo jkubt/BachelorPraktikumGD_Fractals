@@ -26,6 +26,16 @@ SierpinskiTriangle::SierpinskiTriangle(int depth, float r, float g, float b, flo
 	CoSy_x_y[0] = Vertex{ 1450.0f, 100.0f, 0.0f };
 	CoSy_x_y[1] = Vertex{ 900.0f, 100.0f, 0.0f };
 	CoSy_x_y[2] = Vertex{ 900.0f, 650.0f, 0.0f };
+	datapoint[0] = Vertex{ 897.0f, 97.0f, 0.0f};
+	datapoint[1] = Vertex{ 897.0f, 103.0f, 0.0f };
+	datapoint[2] = Vertex{ 903.0f, 97.0f, 0.0f };
+	datapoint[3] = Vertex{ 903.0f, 103.0f, 0.0f };
+	for (int i = 0; i < sizeof(positionsDatapoints)/sizeof(*positionsDatapoints);  i++) {
+		positionsDatapoints[i] = -1.0f;
+	}
+	for (int i = 0; i < sizeof(datapointConnections) / sizeof(*datapointConnections); i++) {
+		datapointConnections[i] = Vertex{ -1.0f, -1.0f, 0.0f };
+	}
 	this->depth = depth;
 	size = 1.0f / ((float) pow(2, depth));
 	redValue255 = int(r * 255);
@@ -37,6 +47,9 @@ SierpinskiTriangle::SierpinskiTriangle(int depth, float r, float g, float b, flo
 	zoomLevel_out = (float) pow(1.08006, 9 * 2);
 	countReplaced = 0;
 	last = false;
+	boxSizeFactorCurrentIterationGraphDimension = 0;
+	timeLastIterationGraphDimension = 0;
+	writeToPositionsDatapoints = false;
 	mouseX = 0;
 	mouseY = 0;
 	wheelY = 0;
@@ -262,6 +275,66 @@ void SierpinskiTriangle::drawCoordinateSystem() {
 	shader.setColorUniform(1.0f, 0.0f, 0.0f, 1.0f);
 }
 
+int SierpinskiTriangle::calculateDimensionGraph() {
+	Uint32 time = SDL_GetTicks();
+	if (writeToPositionsDatapoints) {
+		float logN = log10(boxesWithContent);
+		float logS = log10(boxSizeFactorCurrentIterationGraphDimension);
+		int yIndex = log2(boxSizeFactorCurrentIterationGraphDimension) * 2 - 1;
+		positionsDatapoints[yIndex - 1] = logS;
+		positionsDatapoints[yIndex] = logN;
+		float coSyOriginX = CoSy_x_y[1].x;
+		float coSyOriginY = CoSy_x_y[1].y;
+		datapointConnections[(yIndex - 1) / 2] = Vertex{ coSyOriginX + (logS * 100.0f), coSyOriginY + (logN * 100.0f), 0.0f };
+		std::cout << yIndex << std::endl;
+		std::cout << positionsDatapoints[0] << positionsDatapoints[1] << positionsDatapoints[2] << positionsDatapoints[3] << positionsDatapoints[4] << positionsDatapoints[5] << positionsDatapoints[6] << positionsDatapoints[7] << std::endl;
+		std::cout << positionsDatapoints[16] << positionsDatapoints[17] << std::endl;
+
+		writeToPositionsDatapoints = false;
+	}
+	if(boxSizeFactorCurrentIterationGraphDimension < 512 && boxSizeFactorCurrentIterationGraphDimension > 0) {
+		if (time > timeLastIterationGraphDimension + 2000) {
+			boxSizeFactorCurrentIterationGraphDimension = boxSizeFactorCurrentIterationGraphDimension * 2;
+			timeLastIterationGraphDimension = time;
+			writeToPositionsDatapoints = true;
+		}
+	}
+	shader.bind();
+	int condition = (log2(boxSizeFactorCurrentIterationGraphDimension) - 1) * 2;
+	if (writeToPositionsDatapoints) {
+		condition = (log2(boxSizeFactorCurrentIterationGraphDimension/2) - 1) * 2;
+	}
+	VertexBuffer datapointBuffer(datapoint, 4);
+	for (int i = 0; i <= condition; i += 2) {
+		if (i+2 <= condition) {
+			shader.setColorUniform(0.0f, 0.6f, 0.9f, 1.0f);
+			Vertex tempConnection[2] = {
+				datapointConnections[i / 2],
+				datapointConnections[(i / 2) + 1]
+			};
+			VertexBuffer dataPointConnectionBuffer(tempConnection, 2);
+			dataPointConnectionBuffer.bind();
+			glm::mat4 modelProj = projection * model;
+			int modelProjMatrixLocation = glGetUniformLocation(shader.getShaderId(), "u_modelProj");
+			glUniformMatrix4fv(modelProjMatrixLocation, 1, GL_FALSE, &modelProj[0][0]);
+			glDrawArrays(GL_LINES, 0, 2);
+			dataPointConnectionBuffer.unbind();
+		}
+		shader.setColorUniform(0.9f, 0.6f, 0.0f, 1.0f);
+		datapointBuffer.bind();
+		float deltaX = positionsDatapoints[i] * 100.0f;
+		float deltaY = positionsDatapoints[i + 1] * 100.0f;
+		glm::vec3 transform = glm::vec3(deltaX, deltaY, 0.0f);
+		glm::mat4 model_draw = glm::translate(model, transform);
+		glm::mat4 modelProj = projection * model_draw;
+		int modelProjMatrixLocation = glGetUniformLocation(shader.getShaderId(), "u_modelProj");
+		glUniformMatrix4fv(modelProjMatrixLocation, 1, GL_FALSE, &modelProj[0][0]);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		datapointBuffer.unbind();
+	}
+	return std::max(boxSizeFactorCurrentIterationGraphDimension,1);
+}
+
 void SierpinskiTriangle::setDepth(int depth) { 
 	this->depth = depth; 
 	size = 1.0f / ((float)pow(2, depth));
@@ -282,4 +355,10 @@ void SierpinskiTriangle::setColorFractal(float r, float g, float b) {
 	redValue255 = int(r * 255.0f);
 	greenValue255 = int(g * 255.0f);
 	blueValue255 = int(b * 255.0f);
+}
+
+void SierpinskiTriangle::resetPositionsDatapoints() {
+	for (int i = 0; i < sizeof(positionsDatapoints) / sizeof(*positionsDatapoints); i++) {
+		positionsDatapoints[i] = -1.0f;
+	}
 }

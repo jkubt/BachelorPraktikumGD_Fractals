@@ -16,6 +16,7 @@ public:
 	void drawHorLines(int boxSizeFactor, float r, float g, float b, float a);
 	void drawCoordinateSystem();
 	int contentBoxes(int boxSizeFactor, int windowWidth, int windowHeight, float alphaValue);
+	int calculateDimensionGraph();
 	void handleZoom(float speedMultiplier, int mouseX, int mouseY, Sint32 wheelY, bool leftButton, bool rightButton);
 	void reset(bool resetZoom, int depth);
 
@@ -24,9 +25,14 @@ public:
 	Vertex* getLineHor() { return lineHor; };
 	Vertex* getBox() { return box; };
 	Vertex* getCoordinateSystem() { return CoSy_x_y; };
+	Vertex* getDatapoint() { return datapoint; };
 	float getSize() { return size; };
 
 	void setDepth(int depth);
+	void setBoxSizeFactorCurrentIterationGraphDimension(int boxSizeFactor) { boxSizeFactorCurrentIterationGraphDimension = boxSizeFactor; };
+	void setTimeLastIterateionGraphDimension(Uint32 time) { timeLastIterationGraphDimension = time; };
+
+	void resetPositionsDatapoints();
 
 private:
 	void drawRec(int depth, glm::vec3 transform);
@@ -49,11 +55,17 @@ private:
 	int wheelY;
 	int boxesTotal;
 	int boxesWithContent;
+	int boxSizeFactorCurrentIterationGraphDimension;
+	bool writeToPositionsDatapoints;
+	float positionsDatapoints[18];
+	Uint32 timeLastIterationGraphDimension;
 	Vertex triangle[3];
 	Vertex lineVer[2];
 	Vertex lineHor[2];
 	Vertex box[4];
 	Vertex CoSy_x_y[3];
+	Vertex datapoint[4];
+	Vertex datapointConnections[9];
 	Shader shader = Shader("shader.vert", "shader.frac");
 	glm::mat4 model;
 	glm::mat4 projection;

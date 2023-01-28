@@ -102,9 +102,11 @@ int main(int argc, char** argv) {
 	float boxFillerOpacity = 0.5f;
 	float percentageBoxFillerOpacity = 50.0f;
 	int amountFilledBoxes = 0;
+	bool graphCalculationActive = false;
+	bool clearGraph = true;
 
 	while (!window.getClose()) {
-		
+
 		window.updateBegin();
 
 		window.clear(0.0f, 0.0f, 0.0f, 1.0f);
@@ -154,6 +156,16 @@ int main(int argc, char** argv) {
 		s_triangle.drawCoordinateSystem();
 		coSyBuffer.unbind();
 
+		if (!clearGraph) {
+			int boxSizeFactorTemp = s_triangle.calculateDimensionGraph();
+			if (graphCalculationActive) {
+				boxSizeFactor = boxSizeFactorTemp;
+			}
+			if (boxSizeFactorTemp >= 512) {
+				graphCalculationActive = false;
+			}
+		}
+
 		ImGui::Begin("Box size window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGui::InputInt("Box size factor", &boxSizeFactor, 1, 10);
 		if (boxSizeFactor < 0) {
@@ -193,6 +205,7 @@ int main(int argc, char** argv) {
 		if (ImGui::SliderInt("Depth", &depth, 0, 10)) {
 			s_triangle.setDepth(depth);
 			resetFractalZoom = true;
+			clearGraph = true;
 		}
 		ImGui::End();
 
@@ -214,15 +227,29 @@ int main(int argc, char** argv) {
 		ImGui::End();
 
 		ImGui::Begin("X-axis window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground| ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-		ImGui::Text("log(s)");
+		ImGui::Text("log10(s)");
 		ImGui::Text("s: sizefactor of the boxes");
 		ImGui::End();
 
 		ImGui::Begin("Y-axis window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGui::Text("N: number of filled boxes");
-		ImGui::Text("log(N)");
+		ImGui::Text("log10(N)");
 		ImGui::End();
 
+		ImGui::Begin("Execute graph dimension window", NULL, ImGuiWindowFlags_NoTitleBar /* | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove*/);
+		if (ImGui::Button("Calculate Dimension with Graph", ImVec2(250, 30))) {
+			s_triangle.setBoxSizeFactorCurrentIterationGraphDimension(1);
+			Uint32 time = SDL_GetTicks();
+			s_triangle.setTimeLastIterateionGraphDimension(time);
+			s_triangle.resetPositionsDatapoints();
+			graphCalculationActive = true;
+			showDimensionBoxes = true;
+			fillDimensionBoxes = true;
+			clearGraph = false;
+		}
+		ImGui::End();
+
+		//Select Fractal ... clearGraph = true;
 
 		window.updateEnd();
 	}
