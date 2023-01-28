@@ -16,6 +16,7 @@
 #include "vertexBuffer.h"
 #include "shader.h"
 #include "sierpinskiTriangle.h"
+#include "fractalDimension.h"
 
 void GLAPIENTRY openGLDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
 	std::cout << "[OpenGL Error] " << message << std::endl;
@@ -77,7 +78,8 @@ int main(int argc, char** argv) {
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);		//Wireframe
 
-	SierpinskiTriangle s_triangle(8, 1.0f, 0.0f, 0.0f, 1.0f);
+	SierpinskiTriangle sierpinskiTriangle(8, 1.0f, 0.0f, 0.0f, 1.0f);
+	FractalDimension fractalDimension(1.0f, 0.0f, 0.0f, 1.0f);
 
 	int depth = 8;
 	bool resetFractalZoom = false;
@@ -102,12 +104,12 @@ int main(int argc, char** argv) {
 		float width = (float) window.getWidth();
 		float height = (float) window.getHeight();
 		if ((window.getZoom() || window.getLeftMouseButtonPressed() || window.getRightMouseButtonPressed()) && window.getMouseX() < width/2.0f && window.getMouseX() > width / 160.0f && window.getMouseY() > height / 9.0f && window.getMouseY() < height - height/9.0f) {
-			s_triangle.handleZoom(zoomSpeed,window.getMouseX(), window.getMouseY(), window.getWheelY(), window.getLeftMouseButtonPressed(), window.getRightMouseButtonPressed());
+			sierpinskiTriangle.handleZoom(zoomSpeed,window.getMouseX(), window.getMouseY(), window.getWheelY(), window.getLeftMouseButtonPressed(), window.getRightMouseButtonPressed());
 		}
 
-		s_triangle.reset(resetFractalZoom, depth);
+		sierpinskiTriangle.reset(resetFractalZoom, depth);
 
-		s_triangle.draw(window.getWidth(), window.getHeight(), window.getZoom(), colorFractal[0], colorFractal[1], colorFractal[2]);
+		sierpinskiTriangle.draw(window.getWidth(), window.getHeight(), window.getZoom(), colorFractal[0], colorFractal[1], colorFractal[2]);
 
 		shader.bind();
 		shader.setColorUniform(0.1f, 0.1f, 0.1f, 1.0f);
@@ -116,13 +118,15 @@ int main(int argc, char** argv) {
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, numVerticesFracBounds);
 		fractalBoundsBuffer.unbind();
 
+		fractalDimension.setColorOfFractal(colorFractal[0], colorFractal[1], colorFractal[2]);
+
 		if (fillDimensionBoxes) {
-			amountFilledBoxes = s_triangle.contentBoxes(boxSizeFactor, window.getWidth(), window.getHeight(), boxFillerOpacity);
+			amountFilledBoxes = fractalDimension.contentBoxes(boxSizeFactor, window.getWidth(), window.getHeight(), boxFillerOpacity);
 		}
 
 		if (showDimensionBoxes) {
-			s_triangle.drawVerLines(boxSizeFactor, 1.0f, 1.0f, 1.0f, 1.0f);
-			s_triangle.drawHorLines(boxSizeFactor, 1.0f, 1.0f, 1.0f, 1.0f);
+			fractalDimension.drawVerLines(boxSizeFactor, 1.0f, 1.0f, 1.0f, 1.0f);
+			fractalDimension.drawHorLines(boxSizeFactor, 1.0f, 1.0f, 1.0f, 1.0f);
 		}
 
 		shader.bind();
@@ -133,11 +137,11 @@ int main(int argc, char** argv) {
 		borderBuffer.unbind();
 
 		if (!clearGraph) {
-			int boxSizeFactorTemp = s_triangle.calculateDimensionGraph();
+			int boxSizeFactorTemp = fractalDimension.calculateDimensionGraph();
 			if (graphCalculationActive) {
 				boxSizeFactor = boxSizeFactorTemp;
 			}
-			if (boxSizeFactorTemp >= 512 && SDL_GetTicks() > s_triangle.getTimeLastIterationGraphDimension() + 1500 && graphCalculationActive) {
+			if (boxSizeFactorTemp >= 512 && SDL_GetTicks() > fractalDimension.getTimeLastIterationGraphDimension() + 1500 && graphCalculationActive) {
 				graphCalculationActive = false;
 				boxSizeFactor = 10;
 				showDimensionBoxes = false;
@@ -145,10 +149,10 @@ int main(int argc, char** argv) {
 		}
 
 		if (!graphCalculationActive && !clearGraph) {
-			predictedFunction = s_triangle.drawPredictedFunction();
+			predictedFunction = fractalDimension.drawPredictedFunction();
 		}
 
-		s_triangle.drawCoordinateSystem();
+		fractalDimension.drawCoordinateSystem();
 
 		ImGui::Begin("Box size window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGuiInputTextFlags readOnly = NULL;
@@ -198,7 +202,7 @@ int main(int argc, char** argv) {
 
 		ImGui::Begin("Depth window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		if (ImGui::SliderInt("Depth", &depth, 0, 10)) {
-			s_triangle.setDepth(depth);
+			sierpinskiTriangle.setDepth(depth);
 			resetFractalZoom = true;
 			clearGraph = true;
 			graphCalculationActive = false;
@@ -244,10 +248,10 @@ int main(int argc, char** argv) {
 
 		ImGui::Begin("Execute graph dimension window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		if (ImGui::Button("Calculate Dimension with Graph", ImVec2(250, 30))) {
-			s_triangle.setBoxSizeFactorCurrentIterationGraphDimension(1);
+			fractalDimension.setBoxSizeFactorCurrentIterationGraphDimension(1);
 			Uint32 time = SDL_GetTicks();
-			s_triangle.setTimeLastIterateionGraphDimension(time);
-			s_triangle.resetPositionsDatapoints();
+			fractalDimension.setTimeLastIterateionGraphDimension(time);
+			fractalDimension.resetPositionsDatapoints();
 			graphCalculationActive = true;
 			showDimensionBoxes = true;
 			fillDimensionBoxes = true;
@@ -255,10 +259,10 @@ int main(int argc, char** argv) {
 		}
 		ImGui::End();
 
-		ImGui::Begin("Predicted function window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse /* | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove*/);
+		ImGui::Begin("Predicted function window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		if (!graphCalculationActive && !clearGraph) {
 			ImGui::Text(predictedFunction.c_str());
-			ImGui::Text("\n=> Calculated Fractal Dimension: %f", s_triangle.getCalculatedDimensionWithGraph());
+			ImGui::Text("\n=> Calculated Fractal Dimension: %f", fractalDimension.getCalculatedDimensionWithGraph());
 		}
 		ImGui::End();
 
