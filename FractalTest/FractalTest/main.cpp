@@ -78,19 +78,6 @@ int main(int argc, char** argv) {
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);		//Wireframe
 
 	SierpinskiTriangle s_triangle(8, 1.0f, 0.0f, 0.0f, 1.0f);
-	Vertex* triangle = s_triangle.getVertices();
-	VertexBuffer s_triangleBuffer(triangle, 3);
-
-	Vertex* lineVer = s_triangle.getLineVer();
-	VertexBuffer lineVerBuffer(lineVer, 2);
-	Vertex* lineHor = s_triangle.getLineHor();
-	VertexBuffer lineHorBuffer(lineHor, 2);
-
-	Vertex* box = s_triangle.getBox();
-	VertexBuffer boxBuffer(box, 4);
-
-	Vertex* coSy = s_triangle.getCoordinateSystem();
-	VertexBuffer coSyBuffer(coSy, 3);
 
 	int depth = 8;
 	bool resetFractalZoom = false;
@@ -104,6 +91,7 @@ int main(int argc, char** argv) {
 	int amountFilledBoxes = 0;
 	bool graphCalculationActive = false;
 	bool clearGraph = true;
+	std::string predictedFunction = "";
 
 	while (!window.getClose()) {
 
@@ -119,9 +107,7 @@ int main(int argc, char** argv) {
 
 		s_triangle.reset(resetFractalZoom, depth);
 
-		s_triangleBuffer.bind();
 		s_triangle.draw(window.getWidth(), window.getHeight(), window.getZoom(), colorFractal[0], colorFractal[1], colorFractal[2]);
-		s_triangleBuffer.unbind();
 
 		shader.bind();
 		shader.setColorUniform(0.1f, 0.1f, 0.1f, 1.0f);
@@ -131,18 +117,12 @@ int main(int argc, char** argv) {
 		fractalBoundsBuffer.unbind();
 
 		if (fillDimensionBoxes) {
-			boxBuffer.bind();
 			amountFilledBoxes = s_triangle.contentBoxes(boxSizeFactor, window.getWidth(), window.getHeight(), boxFillerOpacity);
-			boxBuffer.unbind();
 		}
 
 		if (showDimensionBoxes) {
-			lineVerBuffer.bind();
 			s_triangle.drawVerLines(boxSizeFactor, 1.0f, 1.0f, 1.0f, 1.0f);
-			lineVerBuffer.unbind();
-			lineHorBuffer.bind();
 			s_triangle.drawHorLines(boxSizeFactor, 1.0f, 1.0f, 1.0f, 1.0f);
-			lineHorBuffer.unbind();
 		}
 
 		shader.bind();
@@ -152,22 +132,30 @@ int main(int argc, char** argv) {
 		glDrawArrays(GL_LINE_LOOP, 0, numVerticesBorder);
 		borderBuffer.unbind();
 
-		coSyBuffer.bind();
-		s_triangle.drawCoordinateSystem();
-		coSyBuffer.unbind();
-
 		if (!clearGraph) {
 			int boxSizeFactorTemp = s_triangle.calculateDimensionGraph();
 			if (graphCalculationActive) {
 				boxSizeFactor = boxSizeFactorTemp;
 			}
-			if (boxSizeFactorTemp >= 512) {
+			if (boxSizeFactorTemp >= 512 && SDL_GetTicks() > s_triangle.getTimeLastIterationGraphDimension() + 1500 && graphCalculationActive) {
 				graphCalculationActive = false;
+				boxSizeFactor = 10;
+				showDimensionBoxes = false;
 			}
 		}
 
+		if (!graphCalculationActive && !clearGraph) {
+			predictedFunction = s_triangle.drawPredictedFunction();
+		}
+
+		s_triangle.drawCoordinateSystem();
+
 		ImGui::Begin("Box size window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-		ImGui::InputInt("Box size factor", &boxSizeFactor, 1, 10);
+		ImGuiInputTextFlags readOnly = NULL;
+		if (graphCalculationActive) {
+			readOnly = ImGuiInputTextFlags_ReadOnly;
+		}
+		ImGui::InputInt("Box size factor", &boxSizeFactor, 1, 10, readOnly);
 		if (boxSizeFactor < 0) {
 			boxSizeFactor = 0;
 		}
@@ -178,8 +166,14 @@ int main(int argc, char** argv) {
 
 		ImGui::Begin("Box appearance window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGui::Checkbox("Show Boxes", &showDimensionBoxes);
+		if (graphCalculationActive) {
+			showDimensionBoxes = true;
+		}
 		if (showDimensionBoxes) {
 			ImGui::Checkbox("Fill Boxes", &fillDimensionBoxes);
+			if (graphCalculationActive) {
+				fillDimensionBoxes = true;
+			}
 			resetFractalZoom = true;
 			if (fillDimensionBoxes) {
 				ImGui::InputFloat("Fill Color Opacity", &percentageBoxFillerOpacity, 1.0f, 10.0f, "%.1f%%");
@@ -189,6 +183,7 @@ int main(int argc, char** argv) {
 				else if (percentageBoxFillerOpacity < 0.0f) {
 					percentageBoxFillerOpacity = 0.0f;
 				}
+				boxFillerOpacity = percentageBoxFillerOpacity / 100.0f;
 				if (boxSizeFactor > 0) {
 					float fracDimension = log(amountFilledBoxes) / log(boxSizeFactor);
 					ImGui::Text("Current Box Counting Dimension: \n log(%i)/log(%i) = %f", amountFilledBoxes, boxSizeFactor, fracDimension);
@@ -206,6 +201,7 @@ int main(int argc, char** argv) {
 			s_triangle.setDepth(depth);
 			resetFractalZoom = true;
 			clearGraph = true;
+			graphCalculationActive = false;
 		}
 		ImGui::End();
 
@@ -235,8 +231,18 @@ int main(int argc, char** argv) {
 		ImGui::Text("N: number of filled boxes");
 		ImGui::Text("log10(N)");
 		ImGui::End();
+		for (int i = 1; i <= 10; i++) {
+			std::string label = std::to_string(float(i) / 2.0f);
+			std::string labelRounded = label.substr(0, label.find(".") + 2);
+			ImGui::Begin("Lableing window x-axis" + i, NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+			ImGui::Text(labelRounded.c_str());
+			ImGui::End();
+			ImGui::Begin("Lableing window y-axis" + i, NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+			ImGui::Text(labelRounded.c_str());
+			ImGui::End();
+		}
 
-		ImGui::Begin("Execute graph dimension window", NULL, ImGuiWindowFlags_NoTitleBar /* | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove*/);
+		ImGui::Begin("Execute graph dimension window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		if (ImGui::Button("Calculate Dimension with Graph", ImVec2(250, 30))) {
 			s_triangle.setBoxSizeFactorCurrentIterationGraphDimension(1);
 			Uint32 time = SDL_GetTicks();
@@ -246,6 +252,13 @@ int main(int argc, char** argv) {
 			showDimensionBoxes = true;
 			fillDimensionBoxes = true;
 			clearGraph = false;
+		}
+		ImGui::End();
+
+		ImGui::Begin("Predicted function window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse /* | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove*/);
+		if (!graphCalculationActive && !clearGraph) {
+			ImGui::Text(predictedFunction.c_str());
+			ImGui::Text("\n=> Calculated Fractal Dimension: %f", s_triangle.getCalculatedDimensionWithGraph());
 		}
 		ImGui::End();
 
