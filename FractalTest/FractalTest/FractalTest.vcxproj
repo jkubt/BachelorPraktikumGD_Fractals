@@ -24,7 +24,7 @@
     <ProjectGuid>{d40d8fe8-03af-416c-832c-4f9bd15ab20d}</ProjectGuid>
     <RootNamespace>FractalTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>FractalGenerator Prototype</ProjectName>
+    <ProjectName>FracGenBoxDim</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -184,6 +184,7 @@
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="linearRegression.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="sierpinskiCarpet.h" />
     <ClInclude Include="sierpinskiTriangle.h" />
@@ -193,6 +194,14 @@
   <ItemGroup>
     <None Include="shader.frac" />
     <None Include="shader.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FracGenBoxDim.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\lib\Icon.ico" />
+    <Image Include="..\lib\icon2.ico" />
+    <Image Include="..\lib\IconFinal.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

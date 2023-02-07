@@ -116,6 +116,9 @@
     <ClInclude Include="sierpinskiCarpet.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.vert">
@@ -124,5 +127,21 @@
     <None Include="shader.frac">
       <Filter>Quelldateien</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FracGenBoxDim.rc">
+      <Filter>Ressourcendateien</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\lib\Icon.ico">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="..\lib\icon2.ico">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="..\lib\IconFinal.ico">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
   </ItemGroup>
 </Project>

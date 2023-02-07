@@ -26,7 +26,7 @@ void GLAPIENTRY openGLDebugCallback(GLenum source, GLenum type, GLuint id, GLenu
 int main(int argc, char** argv) {
 
 	//Window window(1024, 576, "FractalGenerator");
-	Window window(2304, 1296, "FractalGenerator");
+	Window window(2304, 1296, "Fractal Generator with Minkowski(Box counting) Dimension Showcase");
 
 #ifdef _DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
@@ -80,13 +80,13 @@ int main(int argc, char** argv) {
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);		//Wireframe
 
 	SierpinskiTriangle sierpinskiTriangle(8, 1.0f, 0.0f, 0.0f, 1.0f);
-	SierpinskiCarpet sierpinskiCarpet(5, 0.0f, 1.0f, 0.0f, 1.0f);
+	SierpinskiCarpet sierpinskiCarpet(4, 0.0f, 1.0f, 0.0f, 1.0f);
 	FractalDimension fractalDimension(1.0f, 0.0f, 0.0f, 1.0f);
 
 	int depth = 8;
 	int maxDepth = 10;
 	bool resetFractalZoom = false;
-	float zoomSpeed = 2.0f;
+	float zoomSpeed = 1.0f;
 	bool showDimensionBoxes = false;
 	bool showActualDimension = false;
 	bool fillDimensionBoxes = false;
@@ -363,11 +363,22 @@ int main(int argc, char** argv) {
 					colorFractal[1] = 1.0f;
 					colorFractal[2] = 0.0f;
 					depth = 4;
-					maxDepth = 5;
+					maxDepth = 6;
 					break;
 			}
 		}
 		ImGui::End();
+
+		if (sierpinskiCarpetActive && depth == 6) {
+			ImGui::SetNextWindowPos(ImVec2(10 * windowSizeFactor, 895 * windowSizeFactor + 258));
+			ImGui::SetNextWindowSize(ImVec2(250, 70));
+			ImVec4* colors = ImGui::GetStyle().Colors;
+			colors[ImGuiCol_Text] = ImVec4(0.8f, 0.0f, 0.0f, 1.0f);
+			ImGui::Begin("Zoom warning sierpinski carpet at depth 6", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+			ImGui::Text("Warning: Zooming at this depth may\r\nlead to significant lags");
+			ImGui::End();
+			colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+		}
 
 		window.updateEnd();
 	}
