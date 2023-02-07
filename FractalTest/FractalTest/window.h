@@ -13,7 +13,7 @@ public:
 	virtual ~Window();
 
 	void clear(float r, float g, float b, float a);
-	void updateBegin();
+	float updateBegin();
 	void updateEnd();
 	void destroy();
 

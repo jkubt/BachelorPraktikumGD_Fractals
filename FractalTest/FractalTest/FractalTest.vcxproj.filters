@@ -60,6 +60,9 @@
     <ClCompile Include="fractalDimension.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="sierpinskiCarpet.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="defines.h">
@@ -108,6 +111,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="fractalDimension.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="sierpinskiCarpet.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

@@ -36,10 +36,16 @@ float* LinearRegression::calculateLinearRegression(float datapoints[18]) {
     float endpointpredictedGraphX = 550.0f;
     float endpointpredictedGraphY = slope * 550.0f + intercept*100.0f;
     if (endpointpredictedGraphY > 550.0f) {
-        endpointpredictedGraphX = (550.0f - intercept) / slope;
+        endpointpredictedGraphX = (550.0f - intercept*100.0f) / slope;
         endpointpredictedGraphY = 550.0f;
     }
-    float predictedGraph[4] = { 0.0f, intercept*100.0f, endpointpredictedGraphX, endpointpredictedGraphY};
+    float startpointpredictedGraphX = 0.0f;
+    float startpointpredictedGraphY = intercept * 100.0f;
+    if (startpointpredictedGraphY < 0.0f) {
+        startpointpredictedGraphX = ( - intercept * 100) / slope;
+        startpointpredictedGraphY = 0.0f;
+    }
+    float predictedGraph[4] = { startpointpredictedGraphX, startpointpredictedGraphY, endpointpredictedGraphX, endpointpredictedGraphY};
 
     return predictedGraph;
 }

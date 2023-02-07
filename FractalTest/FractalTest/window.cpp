@@ -20,9 +20,8 @@ Window::Window(int width, int height, const char *title) {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 #endif 
 
-	window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL);
 	glContext = SDL_GL_CreateContext(window);
-	//SDL_MaximizeWindow(window);
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -65,7 +64,7 @@ void Window::clear(float r, float g, float b, float a) {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void Window::updateBegin() {
+float Window::updateBegin() {
 	zoom = false;
 	wheelY = 0;
 
@@ -101,10 +100,22 @@ void Window::updateBegin() {
 				rightMouseButtonPressed = false;
 			}
 		}
+		else if (event.type == SDL_WINDOWEVENT) {
+			int displayindex = SDL_GetWindowDisplayIndex(window);
+			SDL_DisplayMode displaymode;
+			SDL_GetCurrentDisplayMode(displayindex, &displaymode);
+			float displaymodeWidth = displaymode.w;
+			float displaymodeHeight = displaymode.h;
+			SDL_SetWindowSize(window, displaymodeWidth*0.9f, displaymodeHeight*0.9f);
+			glViewport(0, 0, displaymodeWidth*0.9f, displaymodeHeight*0.9f);
+			width = displaymodeWidth*0.9f;
+			height = displaymodeHeight*0.9f;
+		}
 	}
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(window);
 	ImGui::NewFrame();
+	return width / 2304.0f;
 }
 
 void Window::updateEnd() {

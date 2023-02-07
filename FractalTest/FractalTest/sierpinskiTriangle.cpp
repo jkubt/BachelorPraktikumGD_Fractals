@@ -61,13 +61,13 @@ void SierpinskiTriangle::draw(int windowWidth, int windowHeight, bool zoom, floa
 	if (zoomLevel < 1.0f) {
 		zoomLevel = 1.0f;
 	}
-	VertexBuffer s_triangleBuffer(triangle, 3);
+	VertexBuffer sierpinskiTriangleBuffer(triangle, 3);
 	setColorFractal(r, g, b);
 	shader.bind();
 	shader.setColorUniform(r, g, b, 1.0f);
-	s_triangleBuffer.bind();
+	sierpinskiTriangleBuffer.bind();
 	drawRec(depth, glm::vec3(0.0f, 0.0f, 0.0f));
-	s_triangleBuffer.unbind();
+	sierpinskiTriangleBuffer.unbind();
 	shader.unbind();
 }
 
