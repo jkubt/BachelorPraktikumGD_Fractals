@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 #define GLEW_STATIC
@@ -88,6 +88,7 @@ int main(int argc, char** argv) {
 	bool resetFractalZoom = false;
 	float zoomSpeed = 2.0f;
 	bool showDimensionBoxes = false;
+	bool showActualDimension = false;
 	bool fillDimensionBoxes = false;
 	int boxSizeFactor = 10;
 	float colorFractal[3] = { 1.0f, 0.0f, 0.0f};
@@ -193,11 +194,18 @@ int main(int argc, char** argv) {
 		ImGui::End();
 
 		ImGui::SetNextWindowPos(ImVec2(1290 * windowSizeFactor, 230 * windowSizeFactor - 55));
-		ImGui::SetNextWindowSize(ImVec2(440, 112));
+		ImGui::SetNextWindowSize(ImVec2(440, 120));
 		ImGui::Begin("Box appearance window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-		ImGui::Checkbox("Show Boxes", &showDimensionBoxes);
+		if (ImGui::Checkbox("Show Boxes", &showDimensionBoxes) && showDimensionBoxes) {
+			showActualDimension = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Show actual fractal dimension", &showActualDimension) && showActualDimension) {
+			showDimensionBoxes = false;
+		}
 		if (graphCalculationActive) {
 			showDimensionBoxes = true;
+			showActualDimension = false;
 		}
 		if (showDimensionBoxes) {
 			ImGui::Checkbox("Fill Boxes", &fillDimensionBoxes);
@@ -224,12 +232,27 @@ int main(int argc, char** argv) {
 			fillDimensionBoxes = false;
 			resetFractalZoom = false;
 		}
+		if (showActualDimension) {
+			ImGui::Text("\r\nActual fractal dimension: log10(n)/log(s)");
+			ImGui::Text("n: number of copies of the original shape when iterating");
+			ImGui::Text("s: sizefactor of these copies compared to the original shape");
+			if (sierpinskiTriangleActive) {
+				ImGui::Text("=> log(3) / log(2) = 1.58496");
+			}
+			if (sierpinskiCarpetActive) {
+				ImGui::Text("=> log(8) / log(3) = 1.89279");
+			}
+		}
 		ImGui::End();
 
 		ImGui::SetNextWindowPos(ImVec2(1170 * windowSizeFactor - 160, 117 * windowSizeFactor - 20));
 		ImGui::SetNextWindowSize(ImVec2(160, 35));
 		ImGui::Begin("Depth window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		if (ImGui::SliderInt("Depth", &depth, 0, maxDepth)) {
+			if (graphCalculationActive) {
+				showDimensionBoxes = false;
+				fillDimensionBoxes = false;
+			}
 			sierpinskiTriangle.setDepth(depth);
 			resetFractalZoom = true;
 			clearGraph = true;
@@ -291,10 +314,10 @@ int main(int argc, char** argv) {
 			ImGui::End();
 		}
 
-		ImGui::SetNextWindowPos(ImVec2(1290 * windowSizeFactor, 260 * windowSizeFactor + 40));
-		ImGui::SetNextWindowSize(ImVec2(246, 46));
+		ImGui::SetNextWindowPos(ImVec2(1290 * windowSizeFactor + 200, 261 * windowSizeFactor + 47));
+		ImGui::SetNextWindowSize(ImVec2(240, 46));
 		ImGui::Begin("Execute graph dimension window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-		if (ImGui::Button("Calculate Dimension with Graph", ImVec2(230, 30))) {
+		if (ImGui::Button("Calculate Dimension with Graph", ImVec2(225, 30))) {
 			fractalDimension.setBoxSizeFactorCurrentIterationGraphDimension(1);
 			Uint32 time = SDL_GetTicks();
 			fractalDimension.setTimeLastIterateionGraphDimension(time);
@@ -345,8 +368,6 @@ int main(int argc, char** argv) {
 			}
 		}
 		ImGui::End();
-
-		//Select Fractal ... clearGraph = true;
 
 		window.updateEnd();
 	}

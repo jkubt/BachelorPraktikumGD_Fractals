@@ -1,2 +1,3 @@
-﻿  main.cpp
-  FractalTest.vcxproj -> C:\Uni\Informatikstudium\2.Semester\Bachelor-Praktikum GD\Code\BachelorPraktikumGD_Fractals\FractalTest\Debug\FractalTest.exe
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: Das Zwischenverzeichnis (Debug\) enthält freigegebene Dateien aus einem anderen Projekt (FractalTest.vcxproj). Dies kann zu einem falschen Bereinigungs- und Neuerstellungsverhalten führen.
+  TRACKER : Fehler TRK0005: Fehler beim Suchen von "CL.exe". Das System kann die angegebene Datei nicht finden.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(703,5): error MSB6006: "CL.exe" wurde mit dem Code 5 beendet.

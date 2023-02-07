@@ -1,4 +1,35 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: Das Zwischenverzeichnis (x64\Debug\) enthält freigegebene Dateien aus einem anderen Projekt (FractalTest.vcxproj). Dies kann zu einem falschen Bereinigungs- und Neuerstellungsverhalten führen.
+  fractalDimension.cpp
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\fractalDimension.cpp(231,14): warning C4244: "Initialisierung": Konvertierung von "double" in "float", möglicher Datenverlust
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\fractalDimension.cpp(232,14): warning C4244: "Initialisierung": Konvertierung von "double" in "float", möglicher Datenverlust
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\fractalDimension.cpp(233,14): warning C4244: "Initialisierung": Konvertierung von "double" in "int", möglicher Datenverlust
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\fractalDimension.cpp(249,16): warning C4244: "Initialisierung": Konvertierung von "double" in "int", möglicher Datenverlust
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\fractalDimension.cpp(251,75): warning C4244: "=": Konvertierung von "double" in "int", möglicher Datenverlust
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_opengl3.cpp
+  imgui_impl_sdl.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  linearRegression.cpp
   main.cpp
-D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\main.cpp(218,26): warning C4244: "Initialisierung": Konvertierung von "double" in "float", möglicher Datenverlust
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\main.cpp(226,26): warning C4244: "Initialisierung": Konvertierung von "double" in "float", möglicher Datenverlust
+  shader.cpp
+  sierpinskiCarpet.cpp
+  sierpinskiTriangle.cpp
+  vertexBuffer.cpp
+  window.cpp
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\window.cpp(107,27): warning C4244: "Initialisierung": Konvertierung von "int" in "float", möglicher Datenverlust
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\window.cpp(108,28): warning C4244: "Initialisierung": Konvertierung von "int" in "float", möglicher Datenverlust
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\window.cpp(109,70): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\window.cpp(109,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\window.cpp(110,61): warning C4244: "Argument": Konvertierung von "float" in "GLsizei", möglicher Datenverlust
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\window.cpp(110,37): warning C4244: "Argument": Konvertierung von "float" in "GLsizei", möglicher Datenverlust
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\window.cpp(111,28): warning C4244: "=": Konvertierung von "float" in "int", möglicher Datenverlust
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\window.cpp(112,30): warning C4244: "=": Konvertierung von "float" in "int", möglicher Datenverlust
+  Code wird generiert...
+D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\FractalTest\linearRegression.cpp(50): warning C4172: Adresse einer lokalen Variablen oder eines temporären Werts ": predictedGraph" wird zurückgegeben
+glew32s.lib(glew.obj) : warning LNK4099: PDB "" wurde nicht mit "glew32s.lib(glew.obj)" oder an "" gefunden; Objekt wird verknüpft, als ob keine Debuginformationen vorhanden wären.
+LIBCMTD.lib(initializers.obj) : warning LNK4098: Standardbibliothek "libcmt.lib" steht in Konflikt mit anderen Bibliotheken; /NODEFAULTLIB:Bibliothek verwenden.
   FractalTest.vcxproj -> D:\Uni\Informatik\3.Semester\Bachelor_Praktikum_Graphische_Datenverarbeitung\Code\BachelorPraktikumGD_Fractals\FractalTest\x64\Debug\FractalGenerator Prototype.exe
