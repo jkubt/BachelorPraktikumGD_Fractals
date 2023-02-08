@@ -268,10 +268,11 @@ int main(int argc, char** argv) {
 		}
 		ImGui::End();
 
-		ImGui::SetNextWindowPos(ImVec2(1169 * windowSizeFactor - 250, 1155 * windowSizeFactor + 7));
-		ImGui::SetNextWindowSize(ImVec2(250, 35));
+		ImGui::SetNextWindowPos(ImVec2(1169 * windowSizeFactor - 150, 1155 * windowSizeFactor + 7));
+		ImGui::SetNextWindowSize(ImVec2(150, 53));
 		ImGui::Begin("Zoom speed window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-		ImGui::InputFloat("Zoom Speed", &zoomSpeed, 0.2f, 2.0f);
+		ImGui::Text("Zoom Speed");
+		ImGui::InputFloat("", &zoomSpeed, 0.2f, 2.0f);
 		if (zoomSpeed < 0.0f) {
 			zoomSpeed = 0.0f;
 		}
@@ -370,12 +371,12 @@ int main(int argc, char** argv) {
 		ImGui::End();
 
 		if (sierpinskiCarpetActive && depth == 6) {
-			ImGui::SetNextWindowPos(ImVec2(10 * windowSizeFactor, 895 * windowSizeFactor + 258));
+			ImGui::SetNextWindowPos(ImVec2(10 * windowSizeFactor, 1155 * windowSizeFactor + 7));
 			ImGui::SetNextWindowSize(ImVec2(250, 70));
 			ImVec4* colors = ImGui::GetStyle().Colors;
 			colors[ImGuiCol_Text] = ImVec4(0.8f, 0.0f, 0.0f, 1.0f);
 			ImGui::Begin("Zoom warning sierpinski carpet at depth 6", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-			ImGui::Text("Warning: Zooming at this depth may\r\nlead to significant lags");
+			ImGui::Text("Warning: Zooming at\r\nthis depth may lead\r\nto significant lags");
 			ImGui::End();
 			colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 		}
