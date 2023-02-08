@@ -42,4 +42,5 @@ private:
 	Sint32 wheelY;
 	bool leftMouseButtonPressed;
 	bool rightMouseButtonPressed;
+	bool initialDisplay;
 };

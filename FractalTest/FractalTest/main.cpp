@@ -112,7 +112,7 @@ int main(int argc, char** argv) {
 
 		float width = (float) window.getWidth();
 		float height = (float) window.getHeight();
-		if ((window.getZoom() || window.getLeftMouseButtonPressed() || window.getRightMouseButtonPressed()) && window.getMouseX() < width/2.0f && window.getMouseX() > width / 160.0f && window.getMouseY() > height / 9.0f && window.getMouseY() < height - height/9.0f) {
+		if ((window.getZoom() || window.getLeftMouseButtonPressed() || window.getRightMouseButtonPressed()) && window.getMouseX() < width/1.977f && window.getMouseX() > width / 160.0f && window.getMouseY() > height / 9.0f && window.getMouseY() < height - height/9.0f) {
 			if (sierpinskiTriangleActive) {
 				sierpinskiTriangle.handleZoom(zoomSpeed, window.getMouseX(), window.getMouseY(), window.getWheelY(), window.getLeftMouseButtonPressed(), window.getRightMouseButtonPressed());
 			}
@@ -177,7 +177,7 @@ int main(int argc, char** argv) {
 
 		fractalDimension.drawCoordinateSystem();
 
-		ImGui::SetNextWindowPos(ImVec2(1290 * windowSizeFactor, 204 * windowSizeFactor - 76));
+		ImGui::SetNextWindowPos(ImVec2(1290 * windowSizeFactor, 179 * windowSizeFactor - 65));
 		ImGui::SetNextWindowSize(ImVec2(440, 35));
 		ImGui::Begin("Box size window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGuiInputTextFlags readOnly = NULL;
@@ -193,7 +193,7 @@ int main(int argc, char** argv) {
 		}
 		ImGui::End();
 
-		ImGui::SetNextWindowPos(ImVec2(1290 * windowSizeFactor, 230 * windowSizeFactor - 55));
+		ImGui::SetNextWindowPos(ImVec2(1290 * windowSizeFactor, 189 * windowSizeFactor - 33));
 		ImGui::SetNextWindowSize(ImVec2(440, 120));
 		ImGui::Begin("Box appearance window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		if (ImGui::Checkbox("Show Boxes", &showDimensionBoxes) && showDimensionBoxes) {
@@ -245,7 +245,7 @@ int main(int argc, char** argv) {
 		}
 		ImGui::End();
 
-		ImGui::SetNextWindowPos(ImVec2(1170 * windowSizeFactor - 160, 117 * windowSizeFactor - 20));
+		ImGui::SetNextWindowPos(ImVec2(1170 * windowSizeFactor - 160, 137 * windowSizeFactor - 40));
 		ImGui::SetNextWindowSize(ImVec2(160, 35));
 		ImGui::Begin("Depth window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		if (ImGui::SliderInt("Depth", &depth, 0, maxDepth)) {
@@ -260,7 +260,7 @@ int main(int argc, char** argv) {
 		}
 		ImGui::End();
 
-		ImGui::SetNextWindowPos(ImVec2(575 * windowSizeFactor - 100, 902 * windowSizeFactor + 260));
+		ImGui::SetNextWindowPos(ImVec2(575 * windowSizeFactor - 100, 1155 * windowSizeFactor + 7));
 		ImGui::SetNextWindowSize(ImVec2(216, 56));
 		ImGui::Begin("Reset zoom window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		if (ImGui::Button("Reset Zoom", ImVec2(200,40))) {
@@ -268,7 +268,7 @@ int main(int argc, char** argv) {
 		}
 		ImGui::End();
 
-		ImGui::SetNextWindowPos(ImVec2(1169 * windowSizeFactor - 250, 902 * windowSizeFactor + 260));
+		ImGui::SetNextWindowPos(ImVec2(1169 * windowSizeFactor - 250, 1155 * windowSizeFactor + 7));
 		ImGui::SetNextWindowSize(ImVec2(250, 35));
 		ImGui::Begin("Zoom speed window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGui::InputFloat("Zoom Speed", &zoomSpeed, 0.2f, 2.0f);
@@ -277,20 +277,20 @@ int main(int argc, char** argv) {
 		}
 		ImGui::End();
 
-		ImGui::SetNextWindowPos(ImVec2(1290 * windowSizeFactor, 179 * windowSizeFactor - 98));
+		ImGui::SetNextWindowPos(ImVec2(1290 * windowSizeFactor, 170 * windowSizeFactor - 98));
 		ImGui::SetNextWindowSize(ImVec2(440, 35));
 		ImGui::Begin("Select fractal color window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGui::ColorEdit3("Fractal Color", colorFractal);
 		ImGui::End();
 
-		ImGui::SetNextWindowPos(ImVec2(2083 * windowSizeFactor, 907 * windowSizeFactor + 230));
+		ImGui::SetNextWindowPos(ImVec2(2083 * windowSizeFactor, 1149 * windowSizeFactor - 12));
 		ImGui::SetNextWindowSize(ImVec2(246, 66));
 		ImGui::Begin("X-axis window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground| ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGui::Text("log10(s)");
 		ImGui::Text("s: sizefactor\r\nof the boxes");
 		ImGui::End();
 
-		ImGui::SetNextWindowPos(ImVec2(1293 * windowSizeFactor, 280 * windowSizeFactor + 70));
+		ImGui::SetNextWindowPos(ImVec2(1293 * windowSizeFactor, 357 * windowSizeFactor - 7));
 		ImGui::SetNextWindowSize(ImVec2(246, 46));
 		ImGui::Begin("Y-axis window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		ImGui::Text("log10(N)");
@@ -301,20 +301,20 @@ int main(int argc, char** argv) {
 			std::string label = std::to_string(float(i) / 2.0f);
 			std::string labelRounded = label.substr(0, label.find(".") + 2);
 
-			ImGui::SetNextWindowPos(ImVec2((1366 + (72 * (i - 1))) * windowSizeFactor - 17, (909 + 5 * ((i-1) % 2)) * windowSizeFactor + 240));
+			ImGui::SetNextWindowPos(ImVec2((1366 + (72 * (i - 1))) * windowSizeFactor - 17, (1155 + 5 * ((i-1) % 2)) * windowSizeFactor - 5));
 			ImGui::SetNextWindowSize(ImVec2(50, 30));
 			ImGui::Begin("Lableing window x-axis" + i, NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 			ImGui::Text(labelRounded.c_str());
 			ImGui::End();
 
-			ImGui::SetNextWindowPos(ImVec2((1285 + 5 * (i%2)) * windowSizeFactor - 32, (340 + 72 * (10-i) - (15.3f * (10 - i))) * windowSizeFactor + 77 + (15.3f * (10-i))));
+			ImGui::SetNextWindowPos(ImVec2((1285 + 5 * (i%2)) * windowSizeFactor - 32, (432 + 72 * (10-i)) * windowSizeFactor - 15));
 			ImGui::SetNextWindowSize(ImVec2(50, 30));
 			ImGui::Begin("Lableing window y-axis" + i, NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 			ImGui::Text(labelRounded.c_str());
 			ImGui::End();
 		}
 
-		ImGui::SetNextWindowPos(ImVec2(1290 * windowSizeFactor + 200, 261 * windowSizeFactor + 47));
+		ImGui::SetNextWindowPos(ImVec2(1290 * windowSizeFactor + 200, 197 * windowSizeFactor + 86));
 		ImGui::SetNextWindowSize(ImVec2(240, 46));
 		ImGui::Begin("Execute graph dimension window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		if (ImGui::Button("Calculate Dimension with Graph", ImVec2(225, 30))) {
@@ -329,7 +329,7 @@ int main(int argc, char** argv) {
 		}
 		ImGui::End();
 
-		ImGui::SetNextWindowPos(ImVec2(1280 * windowSizeFactor, 930 * windowSizeFactor + 260));
+		ImGui::SetNextWindowPos(ImVec2(1280 * windowSizeFactor, 1180 * windowSizeFactor + 10));
 		ImGui::SetNextWindowSize(ImVec2(333, 80));
 		ImGui::Begin("Predicted function window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		if (!graphCalculationActive && !clearGraph) {
@@ -338,7 +338,7 @@ int main(int argc, char** argv) {
 		}
 		ImGui::End();
 
-		ImGui::SetNextWindowPos(ImVec2(10 * windowSizeFactor, 117 * windowSizeFactor - 20));
+		ImGui::SetNextWindowPos(ImVec2(10 * windowSizeFactor, 137 * windowSizeFactor - 40));
 		ImGui::SetNextWindowSize(ImVec2(350, 35));
 		ImGui::Begin("Fractal selection window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 		if (ImGui::Combo("Select Fractal", &selectedItem, fractalSelection, IM_ARRAYSIZE(fractalSelection))) {

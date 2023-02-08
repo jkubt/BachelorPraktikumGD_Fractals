@@ -9,7 +9,7 @@ SierpinskiCarpet::SierpinskiCarpet(int depth, float r, float g, float b, float a
 	square[0] = Vertex{ 20.0f, 112.25f, 0.0f };
 	square[1] = Vertex{ 800.0f, 112.25f, 0.0f };
 	square[2] = Vertex{ 20.0f, 787.75f, 0.0f };
-	square[3] = Vertex{ 800, 787.75f, 0.0f };
+	square[3] = Vertex{ 800.0f, 787.75f, 0.0f };
 	this->depth = depth;
 	size = 1.0f / ((float)pow(3, depth));
 	redValue255 = int(r * 255);

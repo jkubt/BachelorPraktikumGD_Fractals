@@ -51,6 +51,7 @@ Window::Window(int width, int height, const char *title) {
 	wheelY = 0;
 	leftMouseButtonPressed = false;
 	rightMouseButtonPressed = false;
+	initialDisplay = true;
 }
 
 Window::~Window() {
@@ -106,10 +107,20 @@ float Window::updateBegin() {
 			SDL_GetCurrentDisplayMode(displayindex, &displaymode);
 			float displaymodeWidth = displaymode.w;
 			float displaymodeHeight = displaymode.h;
+			if (displaymodeWidth / 16.0f > displaymodeHeight / 9.0f) {
+				displaymodeWidth = displaymodeHeight / 9.0f * 16.0f;
+			}
+			if (displaymodeWidth / 16.0f < displaymodeHeight / 9.0f) {
+				displaymodeHeight = displaymodeWidth / 16.0f * 9.0f;
+			}
 			SDL_SetWindowSize(window, displaymodeWidth*0.9f, displaymodeHeight*0.9f);
 			glViewport(0, 0, displaymodeWidth*0.9f, displaymodeHeight*0.9f);
 			width = displaymodeWidth*0.9f;
 			height = displaymodeHeight*0.9f;
+			if (initialDisplay) {
+				SDL_SetWindowPosition(window, (displaymode.w-width) / 2, (displaymode.h-height) / 2);
+				initialDisplay = false;
+			}
 		}
 	}
 	ImGui_ImplOpenGL3_NewFrame();

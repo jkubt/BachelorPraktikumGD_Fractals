@@ -7,14 +7,14 @@
 #include "linearRegression.h"
 
 FractalDimension::FractalDimension(float r, float g, float b, float a) {
-	lineVer[0] = Vertex{ 10.0f, 100.0f, 0.0f };
-	lineVer[1] = Vertex{ 10.0f, 800.0f, 0.0f };
-	lineHor[0] = Vertex{ 10.0f, 100.0f, 0.0f };
-	lineHor[1] = Vertex{ 810.f, 100.0f, 0.0f };
-	box[0] = Vertex{ 10.0f, 100.0f, 0.0f };
-	box[1] = Vertex{ 810.0f, 100.0f, 0.0f };
-	box[2] = Vertex{ 10.0f, 800.0f, 0.0f };
-	box[3] = Vertex{ 810.0f, 800.0f, 0.0f };
+	lineVer[0] = Vertex{ 20.0f, 112.25f, 0.0f };
+	lineVer[1] = Vertex{ 20.0f, 787.75f, 0.0f };
+	lineHor[0] = Vertex{ 20.0f, 112.25f, 0.0f };
+	lineHor[1] = Vertex{ 800.0f, 112.25f, 0.0f };
+	box[0] = Vertex{ 20.0f, 112.25f, 0.0f };
+	box[1] = Vertex{ 800.0f, 112.25f, 0.0f };
+	box[2] = Vertex{ 20.0f, 787.75f, 0.0f };
+	box[3] = Vertex{ 800.0f, 787.75f, 0.0f };
 	CoSy_x_y[0] = Vertex{ 1450.0f, 100.0f, 0.0f };
 	CoSy_x_y[1] = Vertex{ 900.0f, 100.0f, 0.0f };
 	CoSy_x_y[2] = Vertex{ 900.0f, 650.0f, 0.0f };
@@ -43,12 +43,12 @@ FractalDimension::FractalDimension(float r, float g, float b, float a) {
 }
 
 void FractalDimension::drawVerLines(int boxSizeFactor, float r, float g, float b, float a) {
-	float width = 800.0f / boxSizeFactor;
+	float width = 780.0f / boxSizeFactor;
 	VertexBuffer lineVerBuffer(lineVer, 2);
 	shader.bind();
 	shader.setColorUniform(r, g, b, a);
 	lineVerBuffer.bind();
-	for (int i = 1; i < boxSizeFactor; i++) {
+	for (int i = 0; i <= boxSizeFactor; i++) {
 		glm::vec3 transform = glm::vec3(i * width, 0.0f, 0.0f);
 		glm::mat4 model_draw = glm::translate(glm::mat4(1.0f), transform);
 		glm::mat4 modelProj = projection * model_draw;
@@ -61,12 +61,12 @@ void FractalDimension::drawVerLines(int boxSizeFactor, float r, float g, float b
 }
 
 void FractalDimension::drawHorLines(int boxSizeFactor, float r, float g, float b, float a) {
-	float height = 700.0f / boxSizeFactor;
+	float height = 675.5f / boxSizeFactor;
 	VertexBuffer lineHorBuffer(lineHor, 2);
 	shader.bind();
 	shader.setColorUniform(r, g, b, a);
 	lineHorBuffer.bind();
-	for (int i = 1; i < boxSizeFactor; i++) {
+	for (int i = 0; i <= boxSizeFactor; i++) {
 		glm::vec3 transform = glm::vec3(0.0f, i * height, 0.0f);
 		glm::mat4 model_draw = glm::translate(glm::mat4(1.0f), transform);
 		glm::mat4 modelProj = projection * model_draw;
@@ -104,13 +104,13 @@ int FractalDimension::contentBoxes(int boxSizeFactor, int windowWidth, int windo
 	for (int i = 0; i < boxSizeFactor; i++) {
 		for (int j = 0; j < boxSizeFactor; j++) {
 
-			glm::vec4 clipSpaceVertex = projection * glm::vec4(10.0f + width * i, 100.0f + height * j, 0.0f, 1.0f);
+			glm::vec4 clipSpaceVertex = projection * glm::vec4(20.0f + width * i, 112.25f + height * j, 0.0f, 1.0f);
 			glm::vec2 ndc = glm::vec2(clipSpaceVertex.x, clipSpaceVertex.y);
 			glm::vec2 windowSpaceCoordinates = ndc * 0.5f + 0.5f;
 			int startX = int(windowSpaceCoordinates.x * windowWidth);
 			int startY = int(windowSpaceCoordinates.y * windowHeight);
 
-			clipSpaceVertex = projection * glm::vec4(10.0f + width * (i + 1), 100.0f + height * (j + 1), 0.0f, 1.0f);
+			clipSpaceVertex = projection * glm::vec4(20.0f + width * (i + 1), 112.25f + height * (j + 1), 0.0f, 1.0f);
 			ndc = glm::vec2(clipSpaceVertex.x, clipSpaceVertex.y);
 			windowSpaceCoordinates = ndc * 0.5f + 0.5f;
 			int endX = int(windowSpaceCoordinates.x * windowWidth);
