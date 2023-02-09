@@ -233,7 +233,7 @@ int main(int argc, char** argv) {
 			resetFractalZoom = false;
 		}
 		if (showActualDimension) {
-			ImGui::Text("\r\nActual fractal dimension: log10(n)/log(s)");
+			ImGui::Text("\r\nActual fractal dimension: log(n)/log(s)");
 			ImGui::Text("n: number of copies of the original shape when iterating");
 			ImGui::Text("s: sizefactor of these copies compared to the original shape");
 			if (sierpinskiTriangleActive) {
